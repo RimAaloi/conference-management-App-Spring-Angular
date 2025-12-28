@@ -1,0 +1,41 @@
+# Build outputs
+target/
+dist/
+build/
+*.jar
+*.war
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm/
+
+# Angular
+.angular/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+postgres_keycloak_data/
+
+# Environment
+.env
+*.env.local
+
+# Maven wrapper (optional)
+!.mvn/wrapper/maven-wrapper.jar
