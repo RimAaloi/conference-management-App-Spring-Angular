@@ -65,7 +65,6 @@ A full-stack microservices application for managing conferences, keynotes, and r
 ### Frontend
 - Angular 20
 - TypeScript
-- PrimeNG
 - Keycloak JS Adapter
 
 ### Infrastructure
@@ -109,8 +108,8 @@ A full-stack microservices application for managing conferences, keynotes, and r
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd test
+git clone https://github.com/RimAaloi/conference-management-App-Spring-Angular.git
+cd conference-management-App-Spring-Angular
 
 # Build backend JARs
 cd api-exam
@@ -207,11 +206,37 @@ The application uses Keycloak for OAuth2/OIDC authentication.
 
 ## Screenshots
 
+### Authentication - Keycloak Login
+![Keycloak Login](screenshots/keycloak-login.png)
+
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
 
+### Eureka Discovery Dashboard
+![Eureka Dashboard](screenshots/eureka-dashboard.png)
+
+---
+
 ### Keynotes Management
-![Keynotes](screenshots/keynotes-list.png)
+
+#### Keynotes List
+![Keynotes List](screenshots/keynotes-list.png)
+
+#### Create Keynote Form
+![Keynote Form](screenshots/keynote-form.png)
+
+#### Keynote Created Successfully
+![Keynote Created](screenshots/keynote-created.png)
+
+---
+
+### Conferences Management
+
+#### Conferences List
+![Conferences List](screenshots/conferences-list.png)
+
+#### Create Conference Form
+![Conference Form](screenshots/conference-form.png)
 
 ---
 
