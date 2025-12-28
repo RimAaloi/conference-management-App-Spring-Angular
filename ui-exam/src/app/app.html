@@ -1,0 +1,46 @@
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a class="sidebar-logo" routerLink="/">
+        <div class="sidebar-logo-icon">🎤</div>
+        <span class="sidebar-logo-text">ConferenceHub</span>
+      </a>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Navigation</div>
+        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span class="nav-link-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-section-title">Gestion</div>
+        <a class="nav-link" routerLink="/keynotes" routerLinkActive="active">
+          <span class="nav-link-icon">👤</span>
+          <span>Keynotes</span>
+        </a>
+        <a class="nav-link" routerLink="/conferences" routerLinkActive="active">
+          <span class="nav-link-icon">📅</span>
+          <span>Conférences</span>
+        </a>
+        <a class="nav-link" routerLink="/reviews" routerLinkActive="active">
+          <span class="nav-link-icon">⭐</span>
+          <span>Reviews</span>
+        </a>
+      </div>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <p>&copy; {{ currentYear }} ConferenceHub</p>
+    </div>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
