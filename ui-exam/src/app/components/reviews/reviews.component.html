@@ -1,0 +1,114 @@
+<div class="page">
+    <header class="header">
+        <h1 class="header-title">Gestion des Reviews</h1>
+    </header>
+
+    <div class="content-area">
+        <!-- Alerts -->
+        @if (successMessage()) {
+        <div class="alert alert-success">✓ {{ successMessage() }}</div>
+        }
+        @if (errorMessage()) {
+        <div class="alert alert-danger">✕ {{ errorMessage() }}</div>
+        }
+
+        <!-- Content -->
+        @if (loading()) {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+        </div>
+        } @else {
+        <div class="card">
+            @if (reviews().length === 0) {
+            <div class="empty-state">
+                <div class="empty-state-icon">⭐</div>
+                <h3>Aucune review</h3>
+                <p>Les reviews apparaîtront ici une fois ajoutées aux conférences</p>
+            </div>
+            } @else {
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Conférence</th>
+                            <th>Note</th>
+                            <th>Commentaire</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (review of reviews(); track review.id) {
+                        <tr>
+                            <td>{{ review.id }}</td>
+                            <td>
+                                <strong>{{ getConferenceTitle(review.conferenceId) }}</strong>
+                            </td>
+                            <td>
+                                <div class="stars">
+                                    @for (filled of getStarArray(review.note); track $index) {
+                                    <span class="star" [class.filled]="filled">★</span>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <span class="review-text-truncate">{{ review.texte }}</span>
+                            </td>
+                            <td>{{ review.date }}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="btn btn-secondary btn-sm" (click)="openEditModal(review)">
+                                        ✏️ Modifier
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" (click)="deleteReview(review)">
+                                        🗑️ Supprimer
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Edit Modal -->
+@if (showEditModal()) {
+<div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">Modifier la Review</h3>
+            <button class="modal-close" (click)="closeModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Note</label>
+                <div class="rating-input">
+                    @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <span class="star star-input" [class.filled]="star <= currentReview.note"
+                        (click)="setRating(star)">★</span>
+                    }
+                    <span class="rating-text">{{ currentReview.note }}/5</span>
+                </div>
+            </div>
+
+            <div class="form-group mb-0">
+                <label class="form-label">Commentaire</label>
+                <textarea class="form-control" [(ngModel)]="currentReview.texte" rows="4"
+                    placeholder="Votre commentaire..."></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+            <button class="btn btn-primary" (click)="updateReview()">Mettre à jour</button>
+        </div>
+    </div>
+</div>
+}

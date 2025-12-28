@@ -1,0 +1,143 @@
+<div class="page">
+    <header class="header">
+        <h1 class="header-title">Gestion des Keynotes</h1>
+        <div class="header-actions">
+            <button class="btn btn-primary" (click)="openCreateModal()">
+                ➕ Nouveau Keynote
+            </button>
+        </div>
+    </header>
+
+    <div class="content-area">
+        <!-- Alerts -->
+        @if (successMessage()) {
+        <div class="alert alert-success">
+            ✓ {{ successMessage() }}
+        </div>
+        }
+        @if (errorMessage()) {
+        <div class="alert alert-danger">
+            ✕ {{ errorMessage() }}
+        </div>
+        }
+
+        <!-- Search -->
+        <div class="search-bar mb-3">
+            <input type="text" class="form-control" placeholder="🔍 Rechercher par nom, prénom ou fonction..."
+                [(ngModel)]="searchTerm" (input)="search()">
+        </div>
+
+        <!-- Content -->
+        @if (loading()) {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+        </div>
+        } @else {
+        <div class="card">
+            @if (getFilteredKeynotes().length === 0) {
+            <div class="empty-state">
+                <div class="empty-state-icon">👤</div>
+                <h3>Aucun keynote trouvé</h3>
+                <p>Ajoutez votre premier conférencier</p>
+                <button class="btn btn-primary" (click)="openCreateModal()">
+                    ➕ Ajouter un keynote
+                </button>
+            </div>
+            } @else {
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom Complet</th>
+                            <th>Email</th>
+                            <th>Fonction</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (keynote of getFilteredKeynotes(); track keynote.id) {
+                        <tr>
+                            <td>{{ keynote.id }}</td>
+                            <td>
+                                <div class="d-flex align-center gap-1">
+                                    <div class="avatar-sm">
+                                        {{ keynote.prenom.charAt(0) }}{{ keynote.nom.charAt(0) }}
+                                    </div>
+                                    <span>{{ keynote.prenom }} {{ keynote.nom }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ keynote.email }}" class="email-link">
+                                    {{ keynote.email }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge badge-success">{{ keynote.fonction }}</span>
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="btn btn-secondary btn-sm" (click)="openEditModal(keynote)">
+                                        ✏️ Modifier
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" (click)="deleteKeynote(keynote)">
+                                        🗑️ Supprimer
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+<div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                {{ editMode() ? 'Modifier le Keynote' : 'Nouveau Keynote' }}
+            </h3>
+            <button class="modal-close" (click)="closeModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" class="form-control" [(ngModel)]="currentKeynote.prenom" placeholder="Prénom">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" [(ngModel)]="currentKeynote.nom" placeholder="Nom">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="currentKeynote.email"
+                    placeholder="email@exemple.com">
+            </div>
+
+            <div class="form-group mb-0">
+                <label class="form-label">Fonction</label>
+                <input type="text" class="form-control" [(ngModel)]="currentKeynote.fonction"
+                    placeholder="Ex: Professeur, Directeur...">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+            <button class="btn btn-primary" (click)="saveKeynote()">
+                {{ editMode() ? 'Mettre à jour' : 'Créer' }}
+            </button>
+        </div>
+    </div>
+</div>
+}

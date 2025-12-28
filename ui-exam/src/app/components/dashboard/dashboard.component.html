@@ -1,0 +1,152 @@
+<div class="page">
+    <header class="header">
+        <h1 class="header-title">Dashboard</h1>
+        <div class="header-actions">
+            <button class="btn btn-primary" routerLink="/conferences">
+                ➕ Nouvelle Conférence
+            </button>
+        </div>
+    </header>
+
+    <div class="content-area">
+        @if (loading()) {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+        </div>
+        } @else {
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon primary">👤</div>
+                <div class="stat-content">
+                    <h3>{{ stats().totalKeynotes }}</h3>
+                    <p>Keynotes</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon success">📅</div>
+                <div class="stat-content">
+                    <h3>{{ stats().totalConferences }}</h3>
+                    <p>Conférences</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon warning">⭐</div>
+                <div class="stat-content">
+                    <h3>{{ stats().totalReviews }}</h3>
+                    <p>Reviews</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon info">📊</div>
+                <div class="stat-content">
+                    <h3>{{ stats().avgScore }}/5</h3>
+                    <p>Score Moyen</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Conferences -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Conférences Récentes</h2>
+                <a class="btn btn-secondary btn-sm" routerLink="/conferences">Voir tout</a>
+            </div>
+
+            @if (getRecentConferences().length === 0) {
+            <div class="empty-state">
+                <div class="empty-state-icon">📅</div>
+                <h3>Aucune conférence</h3>
+                <p>Commencez par créer votre première conférence</p>
+                <button class="btn btn-primary" routerLink="/conferences">
+                    ➕ Créer une conférence
+                </button>
+            </div>
+            } @else {
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Keynote</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (conference of getRecentConferences(); track conference.id) {
+                        <tr>
+                            <td>
+                                <strong>{{ conference.titre }}</strong>
+                            </td>
+                            <td>
+                                <span class="badge" [class.badge-academic]="conference.type === 'ACADEMIC'"
+                                    [class.badge-commercial]="conference.type === 'COMMERCIAL'">
+                                    {{ conference.type }}
+                                </span>
+                            </td>
+                            <td>{{ conference.date }}</td>
+                            <td>
+                                @if (conference.keynote) {
+                                {{ conference.keynote.prenom }} {{ conference.keynote.nom }}
+                                } @else {
+                                <span class="text-muted">Non assigné</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="stars">
+                                    @for (filled of getStarArray(conference.score); track $index) {
+                                    <span class="star" [class.filled]="filled">★</span>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+
+        <!-- Keynotes List -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h2 class="card-title">Keynotes</h2>
+                <a class="btn btn-secondary btn-sm" routerLink="/keynotes">Voir tout</a>
+            </div>
+
+            @if (keynotes().length === 0) {
+            <div class="empty-state">
+                <div class="empty-state-icon">👤</div>
+                <h3>Aucun keynote</h3>
+                <p>Ajoutez des conférenciers pour commencer</p>
+                <button class="btn btn-primary" routerLink="/keynotes">
+                    ➕ Ajouter un keynote
+                </button>
+            </div>
+            } @else {
+            <div class="card-body">
+                <div class="keynotes-grid">
+                    @for (keynote of keynotes().slice(0, 6); track keynote.id) {
+                    <div class="keynote-card">
+                        <div class="keynote-avatar">
+                            {{ keynote.prenom.charAt(0) }}{{ keynote.nom.charAt(0) }}
+                        </div>
+                        <div class="keynote-info">
+                            <h4>{{ keynote.prenom }} {{ keynote.nom }}</h4>
+                            <p>{{ keynote.fonction }}</p>
+                            <span class="keynote-email">{{ keynote.email }}</span>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
